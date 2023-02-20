@@ -84,16 +84,63 @@ You can also create custom nominal types using the NType function. Here's an exa
 a 24-hour time string:
 
 ```ts
+import {
+  ValidatorConstraint,
+  ValidatorConstraintInterface,
+} from "class-validator";
 import { NType } from "@horizon-republic/nominal-types";
 
-function is24HourTime(value: any) {
-  return /^\d\d:\d\d$/.test(value);
+@ValidatorConstraint({ name: Time24Validator.name, async: false })
+class Time24Validator implements ValidatorConstraintInterface {
+  public validate(value: any): boolean {
+    const time24Regex = /^(0?[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/;
+    return time24Regex.test(value);
+  }
+
+  public defaultMessage(): string {
+    return "Time is invalid. It should be in the 24-hour format, e.g. '12:30'.";
+  }
 }
 
-export const Time24 = NType({
-  name: "time-24",
-  validator: is24HourTime,
-});
+/**
+ * Represents a time value in 24-hour format.
+ *
+ * @class
+ * @extends NType
+ */
+export class Time24 extends NType({
+  name: "time24",
+  validator: Time24Validator,
+}) {
+  protected _nominalType = Time24.name;
+
+  /**
+   * Returns the hour component of the time.
+   *
+   * @returns {number} The hour component of the time.
+   */
+  public getHour() {
+    return parseInt(this.value.split(":")[0], 10);
+  }
+
+  /**
+   * Returns the minute component of the time.
+   *
+   * @returns {number} The minute component of the time.
+   */
+  public getMinute() {
+    return parseInt(this.value.split(":")[1], 10);
+  }
+
+  /**
+   * Returns the time as a string in the format "HH:MM".
+   *
+   * @returns {string} The time as a string in the format "HH:MM".
+   */
+  public toString() {
+    return this.value;
+  }
+}
 ```
 
 ## Available Types
