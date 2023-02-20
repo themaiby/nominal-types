@@ -162,3 +162,8 @@ This library provides the following nominal types:
 - Text
 - URL
 - UUID
+
+## ToDo
+
+- NPM package ¯\(ツ)/¯
+- Additional types
