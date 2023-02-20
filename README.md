@@ -66,6 +66,10 @@ export class Username extends NType({
   validator: IsDefined,
 }) {
   protected _nominalType = Username.name;
+
+  public isJohn(value: string) {
+    return value === "John";
+  }
 }
 ```
 
