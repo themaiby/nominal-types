@@ -66,8 +66,8 @@ export const NType = (options: {
       return NominalOrmType;
     }
 
-    public static getValidator(): Constructor<ValidatorConstraintInterface> {
-      if (options.validator) return options.validator;
+    public static getValidator(): ValidatorConstraintInterface {
+      if (options.validator) return new options.validator();
 
       throw new NominalTypeException(
         `${this.name} does not have a validator defined`
