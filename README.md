@@ -67,40 +67,7 @@ export class Username extends NType({
 }) {
   protected _nominalType = Username.name;
 }
-
-export class Email extends NType({ name: "email", validator: IsEmail }) {
-  protected _nominalType = Email.name;
-}
-
-export class FirstName extends NType({
-  name: "first-name",
-  validator: FirstNameValidator,
-}) {
-  protected _nominalType = FirstName.name;
-}
-
-export class LastName extends NType({
-  name: "last-name",
-  validator: LastNameValidator,
-}) {
-  protected _nominalType = LastName.name;
-}
-
-export class FullName extends NType({
-  name: "full-name",
-  validator: FullNameValidator,
-}) {
-  protected _nominalType = FullName.name;
-}
-
-export class DateOfBirth extends NType({
-  name: "date-of-birth",
-  validator: DateOfBirthValidator,
-}) {
-  protected _nominalType = DateOfBirth.name;
-}
 ```
-
 
 ## License
 
