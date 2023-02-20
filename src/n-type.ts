@@ -28,13 +28,13 @@ import { NominalTypeException } from "./exceptions/nominal-type.exception";
  * @constructor
  */
 export const NType = (options: {
-  name: string;
+  name: any;
   validator?: Constructor<ValidatorConstraintInterface>;
 }) => {
   abstract class NominalTypeClass {
     protected abstract readonly _nominalType: string;
 
-    public constructor(public value: string) {}
+    public constructor(public value: any) {}
 
     public isIdentical(value: any) {
       return this.value === value;
