@@ -1,8 +1,8 @@
 import { EntityProperty, Platform, Type } from "@mikro-orm/core";
 import { TransformContext } from "@mikro-orm/core/types/Type";
 import { Constructor } from "@mikro-orm/core/typings";
-import { RuntimeException } from "@nestjs/core/errors/exceptions";
 import { ValidatorConstraintInterface } from "class-validator";
+import { NominalTypeException } from "./exceptions/nominal-type.exception";
 
 /**
  * Basic nominal-type fabric.
@@ -69,7 +69,7 @@ export const NType = (options: {
     public static getValidator(): Constructor<ValidatorConstraintInterface> {
       if (options.validator) return options.validator;
 
-      throw new RuntimeException(
+      throw new NominalTypeException(
         `${this.name} does not have a validator defined`
       );
     }

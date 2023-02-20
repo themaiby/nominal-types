@@ -13,7 +13,6 @@
     "build": "rm -rf dist/lib && tsc && tsc --build tsconfig.json"
   },
   "keywords": [
-    "nestjs",
     "mikroorm",
     "class-validator",
     "nominal-types"

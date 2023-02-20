@@ -1,4 +1,4 @@
-import { RuntimeException } from "@nestjs/core/errors/exceptions";
+import { NominalTypeException } from "../exceptions/nominal-type.exception";
 import { NType } from "../n-type";
 
 describe(NType.name, () => {
@@ -15,7 +15,7 @@ describe(NType.name, () => {
       const NTypeWithoutValidator = NType({ name: "test" });
 
       expect(() => NTypeWithoutValidator.getValidator()).toThrow(
-        RuntimeException
+        NominalTypeException
       );
     });
   });
