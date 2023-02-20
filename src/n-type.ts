@@ -18,7 +18,7 @@ import { ValidatorConstraintInterface } from "class-validator";
  *   }
  * }
  *
- * export class Email extends NominalType({ name: 'email' }) {
+ * export class Email extends NType({ name: 'email' }) {
  *   protected _nominalType = Email.name;
  * }
  *
