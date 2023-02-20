@@ -1,0 +1,32 @@
+{
+  "name": "nominal-types",
+  "version": "0.0.1",
+  "description": "Nominal types with runtime validation with compatibility for NestJS, mikroorm and class-validator",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "/dist"
+  ],
+  "scripts": {
+    "test": "npm run test",
+    "build": "rm -rf dist/lib && tsc && tsc --build tsconfig.json"
+  },
+  "keywords": [
+    "nestjs",
+    "mikroorm",
+    "class-validator",
+    "nominal-types"
+  ],
+  "author": "Kyrylo Lytvynov <themaiby0@gmail.com>",
+  "license": "ISC",
+  "peerDependencies": {
+    "@mikro-orm/core": "^5.6.11",
+    "@nestjs/core": "^9.3.9",
+    "class-validator": "^0.14.0"
+  },
+  "devDependencies": {
+    "prettier": "^2.8.4",
+    "prettier-plugin-organize-imports": "^3.2.2"
+  },
+  "repository": "https://github.com/themaiby/nominal-types"
+}
