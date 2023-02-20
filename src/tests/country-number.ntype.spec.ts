@@ -7,7 +7,7 @@ describe(CountryNumber.name, () => {
   });
 
   it("should pass validation for a valid country number", () => {
-    const validNumber = "004";
+    const validNumber = "840";
     const instance = new CountryNumber(validNumber);
     const validator = new (CountryNumber.getValidator())();
 
@@ -16,7 +16,7 @@ describe(CountryNumber.name, () => {
   });
 
   it("should fail validation for an invalid country number", () => {
-    const invalidNumber = "XYZ";
+    const invalidNumber = "999";
     const instance = new CountryNumber(invalidNumber);
     const validator = new (CountryNumber.getValidator())();
 
@@ -25,17 +25,24 @@ describe(CountryNumber.name, () => {
   });
 
   it("should convert to CountryCode2 correctly", () => {
-    const instance = new CountryNumber("004");
-    const expectedCode2 = "AF";
+    const instance = new CountryNumber("156");
+    const expectedCode2 = "CN";
 
     expect(instance.toCode2().isIdentical(expectedCode2)).toBe(true);
   });
 
   it("should convert to CountryCode3 correctly", () => {
-    const instance = new CountryNumber("004");
-    const expectedCode3 = "AFG";
+    const instance = new CountryNumber("840");
+    const expectedCode3 = "USA";
 
     expect(instance.toCode3().isIdentical(expectedCode3)).toBe(true);
+  });
+
+  it("should convert to country name correctly", () => {
+    const instance = new CountryNumber("276");
+    const expectedName = "Germany";
+
+    expect(instance.toName().isIdentical(expectedName)).toBe(true);
   });
 
   it("should validate dto", () => {
@@ -44,7 +51,7 @@ describe(CountryNumber.name, () => {
       public countryNumber: CountryNumber;
     }
 
-    const invalidNumber = new CountryNumber("XYZ");
+    const invalidNumber = new CountryNumber("999");
     const testDto = new TestDTO();
     testDto.countryNumber = invalidNumber;
 

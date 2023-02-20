@@ -30,4 +30,16 @@ export class CountryCode3 extends NType({
       countryListAllIsoData.find((c) => c.code3 === this.value).code
     );
   }
+
+  public toName() {
+    return new CountryCode2(
+      countryListAllIsoData.find((c) => c.code3 === this.value).name
+    );
+  }
+
+  public toNumber() {
+    return new CountryCode2(
+      countryListAllIsoData.find((c) => c.code3 === this.value).number
+    );
+  }
 }

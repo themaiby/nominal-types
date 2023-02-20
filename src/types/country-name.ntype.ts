@@ -6,6 +6,7 @@ import { NType } from "../n-type";
 import { countryListAllIsoData } from "../utils/valid-country-codes";
 import { CountryCode2 } from "./country-code2.ntype";
 import { CountryCode3 } from "./country-code3.ntype";
+import { CountryNumber } from "./country-number.ntype";
 
 @ValidatorConstraint({ name: CountryNameValidator.name, async: false })
 class CountryNameValidator implements ValidatorConstraintInterface {
@@ -36,5 +37,11 @@ export class CountryName extends NType({
     const country = countryListAllIsoData.find((c) => c.name === this.value);
 
     return new CountryCode3(country.code3);
+  }
+
+  public toNumber() {
+    const country = countryListAllIsoData.find((c) => c.name === this.value);
+
+    return new CountryNumber(country.number);
   }
 }

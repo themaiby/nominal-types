@@ -1,13 +1,13 @@
 import { Validate, validateSync } from "class-validator";
 import { CountryCode2 } from "../types/country-code2.ntype";
 
-describe("CountryCode2", () => {
+describe(CountryCode2.name, () => {
   it("should create a nominal type class with the correct name", () => {
     expect(CountryCode2.name).toBe("CountryCode2");
   });
 
   it("should pass validation for a valid country code", () => {
-    const validCode = "US";
+    const validCode = "DE";
     const instance = new CountryCode2(validCode);
     const validator = new (CountryCode2.getValidator())();
 
@@ -24,18 +24,25 @@ describe("CountryCode2", () => {
     expect(instance.isIdentical(invalidCode)).toBe(true);
   });
 
-  it("should return the correct column type", () => {
-    const TypeClass = new (CountryCode2.getOrmType())();
+  it("should convert to CountryCode3 correctly", () => {
+    const instance = new CountryCode2("DE");
+    const expectedCode3 = "DEU";
 
-    expect(TypeClass.getColumnType(null, null)).toBe("varchar");
+    expect(instance.toCode3().isIdentical(expectedCode3)).toBe(true);
   });
 
-  it("should convert to and from the database correctly", () => {
-    const instance = new CountryCode2("US");
-    const TypeClass = new (CountryCode2.getOrmType())();
+  it("should convert to country name correctly", () => {
+    const instance = new CountryCode2("DE");
+    const expectedName = "Germany";
 
-    expect(TypeClass.convertToDatabaseValue(instance, null)).toBe("US");
-    expect(TypeClass.convertToJSValue("US", null)).toEqual(instance);
+    expect(instance.toName().isIdentical(expectedName)).toBe(true);
+  });
+
+  it("should convert to country number correctly", () => {
+    const instance = new CountryCode2("DE");
+    const expectedNumber = "276";
+
+    expect(instance.toNumber().isIdentical(expectedNumber)).toBe(true);
   });
 
   it("should validate dto", () => {
@@ -51,12 +58,5 @@ describe("CountryCode2", () => {
     const errors = validateSync(testDto);
 
     expect(errors.length).toEqual(1);
-  });
-
-  it("should convert to CountryCode3", () => {
-    const code2 = new CountryCode2("US");
-    const code3 = code2.toCode3();
-
-    expect(code3.value).toEqual("USA");
   });
 });

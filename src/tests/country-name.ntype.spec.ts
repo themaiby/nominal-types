@@ -38,6 +38,13 @@ describe(CountryName.name, () => {
     expect(instance.toCode3().isIdentical(expectedCode3)).toBe(true);
   });
 
+  it("should convert to CountryNumber correctly", () => {
+    const instance = new CountryName("United States");
+    const expectedNumber = "840";
+
+    expect(instance.toNumber().isIdentical(expectedNumber)).toBe(true);
+  });
+
   it("should validate dto", () => {
     class TestDTO {
       @Validate(CountryName.getValidator())
