@@ -32,7 +32,7 @@ export const NType = (options: {
   validator?: Constructor<ValidatorConstraintInterface>;
 }) => {
   abstract class NominalTypeClass {
-    public abstract readonly _nominalType: string;
+    protected abstract readonly _nominalType: string;
 
     public constructor(public value: string) {}
 
