@@ -5,21 +5,21 @@ import {
 } from "class-validator";
 import { NType } from "../n-type";
 
-@ValidatorConstraint({ name: FirstNameValidator.name, async: false })
-class FirstNameValidator implements ValidatorConstraintInterface {
+@ValidatorConstraint({ name: LastNameValidator.name, async: false })
+class LastNameValidator implements ValidatorConstraintInterface {
   public validate(value: any, validationArguments?: ValidationArguments) {
     const nameRegex = /^[A-Za-z]{2,}$/;
     return nameRegex.test(value);
   }
 
   public defaultMessage(validationArguments?: ValidationArguments) {
-    return `${validationArguments.value} is not a valid first name.`;
+    return `${validationArguments.value} is not a valid last name.`;
   }
 }
 
-export class Firstname extends NType({
-  name: "first-name",
-  validator: FirstNameValidator,
+export class Lastname extends NType({
+  name: "last-name",
+  validator: LastNameValidator,
 }) {
-  protected _nominalType = Firstname.name;
+  protected _nominalType = Lastname.name;
 }
