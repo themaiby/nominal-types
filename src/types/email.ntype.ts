@@ -16,6 +16,12 @@ class EmailValidator implements ValidatorConstraintInterface {
   }
 }
 
+/**
+ * Represents an email address.
+ *
+ * @class
+ * @extends NType
+ */
 export class Email extends NType({
   name: "email",
   validator: EmailValidator,

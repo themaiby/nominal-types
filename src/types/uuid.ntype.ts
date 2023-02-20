@@ -18,24 +18,51 @@ class UUIDValidator implements ValidatorConstraintInterface {
   }
 }
 
+/**
+ * Represents a UUID value.
+ *
+ * @class
+ * @extends NType
+ */
 export class UUID extends NType({
   name: "uuid",
   validator: UUIDValidator,
 }) {
-  protected _nominalType = UUID.name;
+  public _nominalType = UUID.name;
 
+  /**
+   * Creates a new UUID instance with the specified value.
+   *
+   * @param {string} value - The value for the new instance.
+   */
   constructor(value: string) {
     super(value);
   }
 
+  /**
+   * Generates a new UUID instance with a random value.
+   *
+   * @returns {UUID} A new UUID instance with a random value.
+   */
   public static generate() {
     return new UUID(v4());
   }
 
+  /**
+   * Checks whether the given UUID is identical to the UUID stored in this instance.
+   *
+   * @param {UUID} other - The UUID to compare with the UUID stored in this instance.
+   * @returns {boolean} `true` if the UUIDs are identical, otherwise `false`.
+   */
   public isIdentical(other: UUID) {
     return this.value === other.value;
   }
 
+  /**
+   * Returns the UUID value formatted as a URL-friendly string without dashes.
+   *
+   * @returns {string} The UUID value formatted as a URL-friendly string without dashes.
+   */
   public toUrlFormat() {
     return this.value.replace(/-/g, "");
   }

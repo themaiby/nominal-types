@@ -19,24 +19,45 @@ class CountryCodeValidator implements ValidatorConstraintInterface {
   }
 }
 
+/**
+ * Represents a two-letter country code (ISO 3166-1 alpha-2).
+ *
+ * @class
+ * @extends NType
+ */
 export class CountryCode2 extends NType({
   name: "country-code",
   validator: CountryCodeValidator,
 }) {
   protected _nominalType = CountryCode2.name;
 
+  /**
+   * Returns the name of the country.
+   *
+   * @returns {CountryCode3} The name of the country.
+   */
   public toName() {
     return new CountryCode3(
       countryListAllIsoData.find((c) => c.code === this.value).name
     );
   }
 
+  /**
+   * Returns the number of the country.
+   *
+   * @returns {CountryCode3} The number of the country.
+   */
   public toNumber() {
     return new CountryCode3(
       countryListAllIsoData.find((c) => c.code === this.value).number
     );
   }
 
+  /**
+   * Returns the three-letter country code.
+   *
+   * @returns {CountryCode3} The three-letter country code.
+   */
   public toCode3() {
     return new CountryCode3(
       countryListAllIsoData.find((c) => c.code === this.value).code3

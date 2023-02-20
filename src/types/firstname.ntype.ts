@@ -17,6 +17,12 @@ class FirstNameValidator implements ValidatorConstraintInterface {
   }
 }
 
+/**
+ * Represents a first name value.
+ *
+ * @class
+ * @extends NType
+ */
 export class Firstname extends NType({
   name: "first-name",
   validator: FirstNameValidator,
