@@ -5,9 +5,11 @@ import { ValidatorConstraintInterface } from "class-validator";
 import { NominalTypeException } from "./exceptions/nominal-type.exception";
 
 /**
- * Basic nominal-type fabric.
- * Usage:
+ * Factory function to create a new NominalTypeClass.
+ * This is a basic fabric for creating nominal types.
  *
+ * Usage:
+ * ```
  * class EmailValidator implements ValidatorConstraintInterface {
  *   public validate(value: any, validationArguments?: ValidationArguments) {
  *     return isEmail(value);
@@ -21,10 +23,13 @@ import { NominalTypeException } from "./exceptions/nominal-type.exception";
  * export class Email extends NType({ name: 'email' }) {
  *   protected _nominalType = Email.name;
  * }
+ * ```
  *
- * Feel free to add additional methods to Email class to action with Email datatype
+ * You can add additional methods to `Email` class to work with email data type
  *
- * @param options
+ * @param options - Options to configure the nominal type
+ * @param options.name - A string representing the name of the nominal type
+ * @param options.validator - A validator constructor for the nominal type
  * @constructor
  */
 export const NType = (options: {
@@ -32,14 +37,31 @@ export const NType = (options: {
   validator?: Constructor<ValidatorConstraintInterface>;
 }) => {
   abstract class NominalTypeClass {
+    /** @internal */
     protected abstract readonly _nominalType: string;
 
+    /**
+     * Constructs a new instance of the nominal type.
+     *
+     * @param value - The value for the nominal type.
+     */
     public constructor(public value: any) {}
 
+    /**
+     * Checks if two values of the nominal type are identical.
+     *
+     * @param value - The value to compare with the current instance value.
+     * @returns Returns `true` if the values are identical, `false` otherwise.
+     */
     public isIdentical(value: any) {
       return this.value === value;
     }
 
+    /**
+     * Returns the ORM type for this nominal type.
+     *
+     * @returns A constructor for the ORM type.
+     */
     public static getOrmType(): Constructor<Type<any>> {
       const self = this;
 
@@ -66,6 +88,12 @@ export const NType = (options: {
       return NominalOrmType;
     }
 
+    /**
+     * Returns the validator constructor for this nominal type.
+     *
+     * @throws An exception if the validator is not defined.
+     * @returns The validator constructor for this nominal type.
+     */
     public static getValidator(): Constructor<ValidatorConstraintInterface> {
       if (options.validator) return options.validator;
 
