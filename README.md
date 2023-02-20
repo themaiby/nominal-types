@@ -1,78 +1,117 @@
 # Nominal Types
 
-This package provides a factory for building nominal types in TypeScript. Nominal types are a way of creating distinct
-types with the same underlying type, for example to distinguish between two strings that have different meanings.
+This library provides nominal types for TypeScript, allowing you to enforce type safety and domain-specific constraints
+on your data.
+
+Nominal types are a way of enforcing type safety and domain-specific constraints in TypeScript. They work by creating
+new types that are distinct from other types, even if they have the same underlying structure. For example, you might
+have two different types that are both based on strings, but one is a first name and the other is a last name. By using
+nominal types, you can ensure that you don't accidentally mix up the two types.
+
+This library provides a set of commonly used nominal types, along with validation logic to ensure that the data you
+receive meets your domain-specific constraints. You can also create your own custom nominal types using the provided
+base class.
+
+## Installation
+
+To use this library in your TypeScript project, you can install it via NPM:
+
+```shell
+npm install @horizon-republic/nominal-types
+```
 
 ## Usage
 
-### Create a Nominal Type
-
-To create a nominal type, use the `NType` factory:
+To use a nominal type in your TypeScript code, you first import it from the library:
 
 ```ts
-import { NType } from "nominal-types";
-
-const MyNominalType = NType({ name: "my-nominal-type" });
+import { Text } from "@horizon-republic/nominal-types";
 ```
 
-This creates a new nominal type called `MyNominalType`. You can now use this type like any other type:
+You can then create an instance of the type by passing a value to its constructor:
 
 ```ts
-function doSomethingWithMyNominalType(value: MyNominalType) {
-  // ...
-}
+const myText = new Text("Hello, world!");
 ```
 
-### Using a Validator
-
-You can add a validator to your nominal type by passing a class that implements `ValidatorConstraintInterface` to
-the `validator` option of the `NType` factory:
+This will create a new instance of the Text type with the value "Hello, world!". You can then use this instance as you
+would any other value of the same type:
 
 ```ts
-import { ValidatorConstraintInterface } from "class-validator";
-import { NType } from "nominal-types";
+console.log(myText); // Text { value: 'Hello, world!' }
+```
 
-class MyValidator implements ValidatorConstraintInterface {
-  public validate(value: any) {
-    return value === "valid";
-  }
+## Type Checking
+
+One of the main benefits of nominal types is that they provide extra type safety. TypeScript will treat two different
+nominal types as distinct, even if they have the same underlying structure. This means that you can catch type errors at
+compile-time, rather than at runtime.
+
+For example, if you have two nominal types FirstName and LastName, TypeScript will treat them as distinct types, even if
+they are both based on strings. This means that you can't accidentally assign a FirstName to a variable of type
+LastName, or vice versa.
+
+```ts
+import { FirstName, LastName } from "@horizon-republic/nominal-types";
+
+const myFirstName = new FirstName("John");
+const myLastName = new LastName("Doe");
+
+// This will cause a compile-time error
+const myNewLastName: LastName = myFirstName;
+```
+
+## Domain-Specific Validation
+
+In addition to providing type safety, nominal types can also be used to enforce domain-specific constraints on your
+data. This library provides a set of commonly used nominal types, along with validation logic to ensure that the data
+you receive meets your domain-specific constraints.
+
+For example, the Email type enforces that the value it contains is a valid email address:
+
+```ts
+import { Email } from "@horizon-republic/nominal-types";
+
+const myEmail = new Email("john.doe@example.com");
+
+// This will cause a runtime error
+const myInvalidEmail = new Email("not an email");
+```
+
+## Custom types
+
+You can also create custom nominal types using the NType function. Here's an example of how to create a custom type for
+a 24-hour time string:
+
+```ts
+import { NType } from "@horizon-republic/nominal-types";
+
+function is24HourTime(value: any) {
+  return /^\d\d:\d\d$/.test(value);
 }
 
-const MyNominalType = NType({
-  name: "my-nominal-type",
-  validator: MyValidator,
+export const Time24 = NType({
+  name: "time-24",
+  validator: is24HourTime,
 });
 ```
 
-### Example Usage
+## Available Types
 
-```ts
-import { IsDefined } from "class-validator";
-import { NType } from "nominal-types";
+This library provides the following nominal types:
 
-class UsernameValidator implements ValidatorConstraintInterface {
-  public validate(value: any) {
-    const usernameRegex = /^[a-zA-Z0-9]{4,20}$/;
-    return usernameRegex.test(value);
-  }
-
-  public defaultMessage() {
-    return "Username must be between 4 and 20 characters and can only contain letters and numbers.";
-  }
-}
-
-export class Username extends NType({
-  name: "username",
-  validator: IsDefined,
-}) {
-  protected _nominalType = Username.name;
-
-  public isJohn(value: string) {
-    return value === "John";
-  }
-}
-```
-
-## License
-
-MIT License
+- BooleanType
+- CountryCode2
+- CountryCode3
+- CountryName
+- CountryNumber
+- DateType
+- Email
+- Firstname
+- Float
+- Integer
+- Lastname
+- PhoneNumber
+- Text
+- URL
+- UUID
