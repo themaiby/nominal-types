@@ -41,8 +41,7 @@ export const NType = (options: {
     }
 
     public static getOrmType(): Constructor<Type<any>> {
-      const instance = Object.create(this.constructor.prototype);
-      const nominalTypeValue = this.prototype.value;
+      const self = this;
 
       class NominalOrmType extends Type<any, string> {
         public getColumnType(prop: EntityProperty, platform: Platform): string {
@@ -50,17 +49,17 @@ export const NType = (options: {
         }
 
         public convertToDatabaseValue(
-          value: string,
+          value: NominalTypeClass,
           platform: Platform,
           context?: TransformContext | boolean
         ): string {
-          return nominalTypeValue;
+          return value.value;
         }
 
         public convertToJSValue(value: string, platform: Platform) {
-          instance.value = value;
-
-          return instance;
+          // todo: find how avoid this
+          // @ts-ignore
+          return new self(value);
         }
       }
 
@@ -68,14 +67,11 @@ export const NType = (options: {
     }
 
     public static getValidator(): Constructor<ValidatorConstraintInterface> {
-      if (!options.validator) {
-        const typeName = this.name;
-        throw new RuntimeException(
-          `${typeName} does not have a validator defined`
-        );
-      }
+      if (options.validator) return options.validator;
 
-      return options.validator;
+      throw new RuntimeException(
+        `${this.name} does not have a validator defined`
+      );
     }
   }
 
