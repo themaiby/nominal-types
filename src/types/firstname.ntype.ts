@@ -13,7 +13,7 @@ class FirstNameValidator implements ValidatorConstraintInterface {
   }
 
   public defaultMessage(validationArguments?: ValidationArguments) {
-    return `${validationArguments.value} is not a valid first name.`;
+    return `${validationArguments?.value ?? 'Specified value'} is not a valid first name.`;
   }
 }
 
@@ -27,5 +27,5 @@ export class Firstname extends NType({
   name: "first-name",
   validator: FirstNameValidator,
 }) {
-  protected _nominalType = Firstname.name;
+  public _nominalType = Firstname.name;
 }

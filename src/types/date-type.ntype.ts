@@ -19,5 +19,5 @@ export class DateType extends NType({
   name: "date",
   validator: DateValidator,
 }) {
-  protected _nominalType = DateType.name;
+  public _nominalType = DateType.name;
 }

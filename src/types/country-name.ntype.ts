@@ -25,23 +25,23 @@ export class CountryName extends NType({
   name: "country-name",
   validator: CountryNameValidator,
 }) {
-  protected _nominalType = CountryName.name;
+  public _nominalType = CountryName.name;
 
   public toCode2() {
     const country = countryListAllIsoData.find((c) => c.name === this.value);
 
-    return new CountryCode2(country.code);
+    return new CountryCode2(country?.code);
   }
 
   public toCode3() {
     const country = countryListAllIsoData.find((c) => c.name === this.value);
 
-    return new CountryCode3(country.code3);
+    return new CountryCode3(country?.code3);
   }
 
   public toNumber() {
     const country = countryListAllIsoData.find((c) => c.name === this.value);
 
-    return new CountryNumber(country.number);
+    return new CountryNumber(country?.number);
   }
 }

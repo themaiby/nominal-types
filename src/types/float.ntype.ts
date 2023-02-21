@@ -16,7 +16,7 @@ export class Float extends NType({
   name: "float",
   validator: FloatValidator,
 }) {
-  protected _nominalType = Float.name;
+  public _nominalType = Float.name;
 
   public isIdentical(value: number) {
     return this.value === value;

@@ -26,7 +26,7 @@ export class Url extends NType({
   name: "url",
   validator: UrlValidator,
 }) {
-  protected _nominalType = Url.name;
+  public _nominalType = Url.name;
 
   /**
    * Creates a new `Url` instance from the given URL string.

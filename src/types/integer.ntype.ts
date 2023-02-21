@@ -16,7 +16,7 @@ export class Integer extends NType({
   name: "integer",
   validator: IntegerValidator,
 }) {
-  protected _nominalType = Integer.name;
+  public _nominalType = Integer.name;
 
   public isIdentical(value: number) {
     return this.value === value;

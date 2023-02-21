@@ -34,5 +34,5 @@ export class PhoneNumber extends NType({
   name: "phone-number",
   validator: PhoneNumberValidator,
 }) {
-  protected _nominalType = PhoneNumber.name;
+  public _nominalType = PhoneNumber.name;
 }

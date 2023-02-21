@@ -23,23 +23,23 @@ export class CountryCode3 extends NType({
   name: "country-code",
   validator: CountryCodeValidator,
 }) {
-  protected _nominalType = CountryCode3.name;
+  public _nominalType = CountryCode3.name;
 
   public toCode2() {
     return new CountryCode2(
-      countryListAllIsoData.find((c) => c.code3 === this.value).code
+      countryListAllIsoData.find((c) => c.code3 === this.value)?.code
     );
   }
 
   public toName() {
     return new CountryCode2(
-      countryListAllIsoData.find((c) => c.code3 === this.value).name
+      countryListAllIsoData.find((c) => c.code3 === this.value)?.name
     );
   }
 
   public toNumber() {
     return new CountryCode2(
-      countryListAllIsoData.find((c) => c.code3 === this.value).number
+      countryListAllIsoData.find((c) => c.code3 === this.value)?.number
     );
   }
 }

@@ -38,7 +38,7 @@ export const NType = (options: {
 }) => {
   abstract class NominalTypeClass {
     /** @internal */
-    protected abstract readonly _nominalType: string;
+    public abstract readonly _nominalType: string;
 
     /**
      * Constructs a new instance of the nominal type.

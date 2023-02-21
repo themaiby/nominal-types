@@ -26,5 +26,5 @@ export class Email extends NType({
   name: "email",
   validator: EmailValidator,
 }) {
-  protected _nominalType = Email.name;
+  public _nominalType = Email.name;
 }

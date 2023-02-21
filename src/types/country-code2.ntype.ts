@@ -29,7 +29,7 @@ export class CountryCode2 extends NType({
   name: "country-code",
   validator: CountryCodeValidator,
 }) {
-  protected _nominalType = CountryCode2.name;
+  public _nominalType = CountryCode2.name;
 
   /**
    * Returns the name of the country.
@@ -38,7 +38,7 @@ export class CountryCode2 extends NType({
    */
   public toName() {
     return new CountryCode3(
-      countryListAllIsoData.find((c) => c.code === this.value).name
+      countryListAllIsoData.find((c) => c.code === this.value)?.name
     );
   }
 
@@ -49,7 +49,7 @@ export class CountryCode2 extends NType({
    */
   public toNumber() {
     return new CountryCode3(
-      countryListAllIsoData.find((c) => c.code === this.value).number
+      countryListAllIsoData.find((c) => c.code === this.value)?.number
     );
   }
 
@@ -60,7 +60,7 @@ export class CountryCode2 extends NType({
    */
   public toCode3() {
     return new CountryCode3(
-      countryListAllIsoData.find((c) => c.code === this.value).code3
+      countryListAllIsoData.find((c) => c.code === this.value)?.code3
     );
   }
 }

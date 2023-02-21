@@ -24,7 +24,7 @@ export class BooleanType extends NType({
    *
    * @type {string}
    */
-  protected _nominalType = BooleanType.name;
+  public _nominalType = BooleanType.name;
 
   /**
    * Checks if the boolean value is identical to the specified value.

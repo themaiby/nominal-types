@@ -13,7 +13,7 @@ class LastNameValidator implements ValidatorConstraintInterface {
   }
 
   public defaultMessage(validationArguments?: ValidationArguments) {
-    return `${validationArguments.value} is not a valid last name.`;
+    return `${validationArguments?.value ?? 'Specified value' } is not a valid last name.`;
   }
 }
 
@@ -21,5 +21,5 @@ export class Lastname extends NType({
   name: "last-name",
   validator: LastNameValidator,
 }) {
-  protected _nominalType = Lastname.name;
+  public _nominalType = Lastname.name;
 }

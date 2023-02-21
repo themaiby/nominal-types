@@ -1,21 +1,17 @@
 {
-  "compileOnSave": false,
   "compilerOptions": {
-    "sourceMap": true,
-    "declaration": false,
-    "moduleResolution": "node",
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "importHelpers": true,
-    "outDir": "./dist",
-    "target": "es2015",
-    "module": "esnext",
-    "lib": ["es2017", "dom"],
-    "skipLibCheck": true,
-    "skipDefaultLibCheck": true,
-    "paths": {},
-    "resolveJsonModule": true,
-    "esModuleInterop": true
+    "target": "es5",
+    "module": "commonjs",
+    "lib": ["es2017", "es7", "es6", "dom"],
+    "declaration": true,
+    "outDir": "dist",
+    "strict": true,
+    "esModuleInterop": true,
+    "experimentalDecorators": true
   },
-  "exclude": ["node_modules", "tmp"]
+  "exclude": [
+    "node_modules",
+    "dist",
+    "tests"
+  ]
 }
