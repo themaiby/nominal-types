@@ -31,10 +31,6 @@ jobs:
         with:
           node-version: 16
           registry-url: https://registry.npmjs.org
-      - name: 'change version'
-        uses: reedyuk/npm-version@1.1.1
-        with:
-          git-tag-version: 'true'
       - run: npm ci --omit-dev
       - run: npm publish --access public
         env:
