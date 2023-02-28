@@ -58,7 +58,7 @@ describe(Url.name, () => {
       public url: Url;
     }
 
-    const invalidUrl = new Url("example.com");
+    const invalidUrl = new Url("example");
     const testDto = new TestDTO();
     testDto.url = invalidUrl;
 
