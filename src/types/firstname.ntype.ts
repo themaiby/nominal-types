@@ -22,9 +22,9 @@ class FirstNameValidator implements ValidatorConstraintInterface {
  * @class
  * @extends NType
  */
-export class Firstname extends NType({
+export class FirstName extends NType({
   name: 'first-name',
   validator: FirstNameValidator,
 }) {
-  public _nominalType = Firstname.name;
+  public _nominalType = FirstName.name;
 }

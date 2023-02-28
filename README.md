@@ -25,20 +25,20 @@ npm install @horizon-republic/nominal-types
 To use a nominal type in your TypeScript code, you first import it from the library:
 
 ```ts
-import { Text } from '@horizon-republic/nominal-types';
+import { Email } from '@horizon-republic/nominal-types';
 ```
 
 You can then create an instance of the type by passing a value to its constructor:
 
 ```ts
-const myText = new Text('Hello, world!');
+const myEmail = new Email('user@example.com');
 ```
 
-This will create a new instance of the Text type with the value "Hello, world!". You can then use this instance as you
+This will create a new instance of the Email type with the value "user@example.com". You can then use this instance as you
 would any other value of the same type:
 
 ```ts
-console.log(myText); // Text { value: 'Hello, world!' }
+console.log(myEmail); // Email { value: 'Hello, world!', _nominalType = 'email' }
 ```
 
 ## Type Checking

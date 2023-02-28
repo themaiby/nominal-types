@@ -15,9 +15,9 @@ class LastNameValidator implements ValidatorConstraintInterface {
   }
 }
 
-export class Lastname extends NType({
+export class LastName extends NType({
   name: 'last-name',
   validator: LastNameValidator,
 }) {
-  public _nominalType = Lastname.name;
+  public _nominalType = LastName.name;
 }
