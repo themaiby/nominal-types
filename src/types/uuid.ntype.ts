@@ -1,20 +1,17 @@
-import {
-  ValidatorConstraint,
-  ValidatorConstraintInterface,
-} from "class-validator";
-import { v4 } from "uuid";
-import { NType } from "../n-type";
+import { t } from '@mikro-orm/core';
+import { ValidatorConstraint, ValidatorConstraintInterface } from 'class-validator';
+import { v4 } from 'uuid';
+import { NType } from '../n-type';
 
 @ValidatorConstraint({ name: UUIDValidator.name, async: false })
 class UUIDValidator implements ValidatorConstraintInterface {
   public validate(value: any) {
-    const uuidRegExp =
-      /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+    const uuidRegExp = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
     return uuidRegExp.test(value);
   }
 
   public defaultMessage() {
-    return "Invalid UUID format.";
+    return 'Invalid UUID format.';
   }
 }
 
@@ -25,18 +22,13 @@ class UUIDValidator implements ValidatorConstraintInterface {
  * @extends NType
  */
 export class UUID extends NType({
-  name: "uuid",
+  name: 'uuid',
   validator: UUIDValidator,
 }) {
   public _nominalType = UUID.name;
 
-  /**
-   * Creates a new UUID instance with the specified value.
-   *
-   * @param {string} value - The value for the new instance.
-   */
-  constructor(value: string) {
-    super(value);
+  public static getOrmType() {
+    return t.uuid;
   }
 
   /**
@@ -64,6 +56,6 @@ export class UUID extends NType({
    * @returns {string} The UUID value formatted as a URL-friendly string without dashes.
    */
   public toUrlFormat() {
-    return this.value.replace(/-/g, "");
+    return this.value.replace(/-/g, '');
   }
 }

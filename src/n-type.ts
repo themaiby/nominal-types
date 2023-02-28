@@ -1,8 +1,11 @@
-import { EntityProperty, Platform, Type } from "@mikro-orm/core";
-import { TransformContext } from "@mikro-orm/core/types/Type";
-import { Constructor } from "@mikro-orm/core/typings";
-import { ValidatorConstraintInterface } from "class-validator";
-import { NominalTypeException } from "./exceptions/nominal-type.exception";
+import { EntityProperty, Platform, Type } from '@mikro-orm/core';
+import { TransformContext } from '@mikro-orm/core/types/Type';
+import { Constructor } from '@mikro-orm/core/typings';
+import { applyDecorators } from '@nestjs/common';
+import { ApiProperty, ApiPropertyOptions } from '@nestjs/swagger';
+import { Transform } from 'class-transformer';
+import { IsObject, IsString, Validate, ValidatorConstraintInterface } from 'class-validator';
+import { NominalTypeException } from './exceptions/nominal-type.exception';
 
 /**
  * Factory function to create a new NominalTypeClass.
@@ -32,13 +35,12 @@ import { NominalTypeException } from "./exceptions/nominal-type.exception";
  * @param options.validator - A validator constructor for the nominal type
  * @constructor
  */
-export const NType = (options: {
-  name: any;
-  validator?: Constructor<ValidatorConstraintInterface>;
-}) => {
+export const NType = (options: { name: string; validator?: Constructor<ValidatorConstraintInterface> }) => {
   abstract class NominalTypeClass {
     /** @internal */
     public abstract readonly _nominalType: string;
+
+    protected static readonly apiPropertyOptions: ApiPropertyOptions = { type: String, example: 'string' };
 
     /**
      * Constructs a new instance of the nominal type.
@@ -46,6 +48,14 @@ export const NType = (options: {
      * @param value - The value for the nominal type.
      */
     public constructor(public value: any) {}
+
+    public toString() {
+      return this.value;
+    }
+
+    public toJSON() {
+      return this.toString();
+    }
 
     /**
      * Checks if two values of the nominal type are identical.
@@ -63,23 +73,25 @@ export const NType = (options: {
      * @returns A constructor for the ORM type.
      */
     public static getOrmType(): Constructor<Type<any>> {
+      // eslint-disable-next-line @typescript-eslint/no-this-alias
       const self = this;
 
       class NominalOrmType extends Type<any, string> {
         public getColumnType(prop: EntityProperty, platform: Platform): string {
-          return "varchar";
+          return 'varchar';
         }
 
         public convertToDatabaseValue(
           value: NominalTypeClass,
           platform: Platform,
-          context?: TransformContext | boolean
+          context?: TransformContext | boolean,
         ): string {
           return value.value;
         }
 
         public convertToJSValue(value: string, platform: Platform) {
           // todo: find how avoid this
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
           return new self(value);
         }
@@ -91,14 +103,38 @@ export const NType = (options: {
     /**
      * Returns the validator constructor for this nominal type.
      *
+     * todo: probably can be protected
+     *
      * @throws An exception if the validator is not defined.
      * @returns The validator constructor for this nominal type.
      */
     public static getValidator(): Constructor<ValidatorConstraintInterface> {
       if (options.validator) return options.validator;
 
-      throw new NominalTypeException(
-        `${this.name} does not have a validator defined`
+      throw new NominalTypeException(`${this.name} does not have a validator defined`);
+    }
+
+    /**
+     * Basic implementation of request decorator. Can be inherited
+     */
+    public static getRequestDecorators() {
+      return applyDecorators(
+        IsObject(),
+        ApiProperty(this.apiPropertyOptions),
+        Validate(this.getValidator()),
+        Transform(({ value }) => {
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          return new this(value);
+        }),
+      );
+    }
+
+    public static getResponseDecorators(propertyName: string) {
+      return applyDecorators(
+        ApiProperty(this.apiPropertyOptions),
+        IsString(),
+        Transform(({ obj }) => obj[propertyName]),
       );
     }
   }

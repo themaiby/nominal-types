@@ -147,19 +147,14 @@ export class Time24 extends NType({
 
 This library provides the following nominal types:
 
-- BooleanType
 - CountryCode2
 - CountryCode3
 - CountryName
 - CountryNumber
-- DateType
 - Email
 - Firstname
-- Float
-- Integer
 - Lastname
 - PhoneNumber
-- Text
 - URL
 - UUID
 

@@ -1,9 +1,5 @@
-import {
-  ValidationArguments,
-  ValidatorConstraint,
-  ValidatorConstraintInterface,
-} from "class-validator";
-import { NType } from "../n-type";
+import { ValidationArguments, ValidatorConstraint, ValidatorConstraintInterface } from 'class-validator';
+import { NType } from '../n-type';
 
 @ValidatorConstraint({ name: LastNameValidator.name, async: false })
 class LastNameValidator implements ValidatorConstraintInterface {
@@ -13,12 +9,14 @@ class LastNameValidator implements ValidatorConstraintInterface {
   }
 
   public defaultMessage(validationArguments?: ValidationArguments) {
-    return `${validationArguments?.value ?? 'Specified value' } is not a valid last name.`;
+    return `${validationArguments.property}: ${
+      validationArguments?.value ?? 'Specified value'
+    } is not a valid last name.`;
   }
 }
 
 export class Lastname extends NType({
-  name: "last-name",
+  name: 'last-name',
   validator: LastNameValidator,
 }) {
   public _nominalType = Lastname.name;
