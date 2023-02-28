@@ -143,6 +143,32 @@ export class Time24 extends NType({
 }
 ```
 
+To set `value` type just change it child constructor:
+
+```typescript
+class Type extends NType() {
+  public constructor(public value: string) {
+    super(value);
+  }
+
+  /** OR */
+
+  public constructor(public value: boolean) {
+    super(value);
+  }
+
+  /** OR */
+
+  public constructor(public value: number) {
+    super(value);
+  }
+}
+```
+
+Theoretically, more than just a primitive type can be used in `value` property.
+But I don't see the point in using objects since the nominal type is already an object.
+In any case you will most likely have to override all methods of the child class in order for the objects to work.
+
 ## Available Types
 
 This library provides the following nominal types:
@@ -160,5 +186,5 @@ This library provides the following nominal types:
 
 ## ToDo
 
-- NPM package ¯\(ツ)/¯
+- Generic typings
 - Additional types
