@@ -1,6 +1,11 @@
-import { ApiPropertyOptions } from '@nestjs/swagger';
-import { isEmail, ValidationArguments, ValidatorConstraint, ValidatorConstraintInterface } from 'class-validator';
-import { NType } from '../n-type';
+import { ApiPropertyOptions } from "@nestjs/swagger";
+import {
+  isEmail,
+  ValidationArguments,
+  ValidatorConstraint,
+  ValidatorConstraintInterface,
+} from "class-validator";
+import { NType } from "../n-type";
 
 @ValidatorConstraint({ name: EmailValidator.name, async: false })
 class EmailValidator implements ValidatorConstraintInterface {
@@ -9,7 +14,9 @@ class EmailValidator implements ValidatorConstraintInterface {
   }
 
   public defaultMessage(validationArguments?: ValidationArguments) {
-    return `${validationArguments.property}: ${validationArguments?.value ?? 'Specified value'} is not a valid e-mail.`;
+    return `${validationArguments.property}: ${
+      validationArguments?.value ?? "Specified value"
+    } is not a valid e-mail.`;
   }
 }
 
@@ -20,10 +27,13 @@ class EmailValidator implements ValidatorConstraintInterface {
  * @extends NType
  */
 export class Email extends NType({
-  name: 'email',
+  name: "email",
   validator: EmailValidator,
 }) {
   public _nominalType = Email.name;
 
-  protected static apiPropertyOptions: ApiPropertyOptions = { type: String, format: 'email' };
+  public static apiPropertyOptions: ApiPropertyOptions = {
+    type: String,
+    format: "email",
+  };
 }

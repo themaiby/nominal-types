@@ -2,23 +2,25 @@
   "compileOnSave": false,
   "compilerOptions": {
     "rootDir": "src",
-    "sourceMap": true,
+    "outDir": "dist",
+    "module": "commonjs",
+    "target": "es2017",
     "declaration": true,
-    "moduleResolution": "node",
+    "removeComments": false,
+    "noImplicitAny": false,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "importHelpers": true,
-    "target": "es2015",
-    "module": "esnext",
-    "lib": ["es2017", "dom"],
+    "allowSyntheticDefaultImports": true,
+    "sourceMap": true,
+    "incremental": false,
     "skipLibCheck": true,
-    "skipDefaultLibCheck": true,
-    "baseUrl": ".",
-    "paths": {},
-    "resolveJsonModule": true,
-    "esModuleInterop": true,
-    "strict": false,
-    "outDir": "dist"
+    "strictNullChecks": false,
+    "strictBindCallApply": false,
+    "forceConsistentCasingInFileNames": false,
+    "noFallthroughCasesInSwitch": false
   },
-  "exclude": ["node_modules", "tmp", "dist"]
+  "exclude": ["node_modules", "tmp", "dist"],
+  "include": [
+    "src/**/*"
+  ],
 }

@@ -1,11 +1,16 @@
-import { EntityProperty, Platform, Type } from '@mikro-orm/core';
-import { TransformContext } from '@mikro-orm/core/types/Type';
-import { Constructor } from '@mikro-orm/core/typings';
-import { applyDecorators } from '@nestjs/common';
-import { ApiProperty, ApiPropertyOptions } from '@nestjs/swagger';
-import { Transform } from 'class-transformer';
-import { IsObject, IsString, Validate, ValidatorConstraintInterface } from 'class-validator';
-import { NominalTypeException } from './exceptions/nominal-type.exception';
+import { EntityProperty, Platform, Type } from "@mikro-orm/core";
+import { TransformContext } from "@mikro-orm/core/types/Type";
+import { Constructor } from "@mikro-orm/core/typings";
+import { applyDecorators } from "@nestjs/common";
+import { ApiProperty, ApiPropertyOptions } from "@nestjs/swagger";
+import { Transform } from "class-transformer";
+import {
+  IsObject,
+  IsString,
+  Validate,
+  ValidatorConstraintInterface,
+} from "class-validator";
+import { NominalTypeException } from "./exceptions/nominal-type.exception";
 
 /**
  * Factory function to create a new NominalTypeClass.
@@ -35,12 +40,18 @@ import { NominalTypeException } from './exceptions/nominal-type.exception';
  * @param options.validator - A validator constructor for the nominal type
  * @constructor
  */
-export const NType = (options: { name: string; validator?: Constructor<ValidatorConstraintInterface> }) => {
+export const NType = (options: {
+  name: string;
+  validator?: Constructor<ValidatorConstraintInterface>;
+}) => {
   abstract class NominalTypeClass {
     /** @internal */
     public abstract readonly _nominalType: string;
 
-    protected static readonly apiPropertyOptions: ApiPropertyOptions = { type: String, example: 'string' };
+    public static readonly apiPropertyOptions: ApiPropertyOptions = {
+      type: String,
+      example: "string",
+    };
 
     /**
      * Constructs a new instance of the nominal type.
@@ -78,13 +89,13 @@ export const NType = (options: { name: string; validator?: Constructor<Validator
 
       class NominalOrmType extends Type<any, string> {
         public getColumnType(prop: EntityProperty, platform: Platform): string {
-          return 'varchar';
+          return "varchar";
         }
 
         public convertToDatabaseValue(
           value: NominalTypeClass,
           platform: Platform,
-          context?: TransformContext | boolean,
+          context?: TransformContext | boolean
         ): string {
           return value.value;
         }
@@ -111,7 +122,9 @@ export const NType = (options: { name: string; validator?: Constructor<Validator
     public static getValidator(): Constructor<ValidatorConstraintInterface> {
       if (options.validator) return options.validator;
 
-      throw new NominalTypeException(`${this.name} does not have a validator defined`);
+      throw new NominalTypeException(
+        `${this.name} does not have a validator defined`
+      );
     }
 
     /**
@@ -126,7 +139,7 @@ export const NType = (options: { name: string; validator?: Constructor<Validator
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
           return new this(value);
-        }),
+        })
       );
     }
 
@@ -134,7 +147,7 @@ export const NType = (options: { name: string; validator?: Constructor<Validator
       return applyDecorators(
         ApiProperty(this.apiPropertyOptions),
         IsString(),
-        Transform(({ obj }) => obj[propertyName]),
+        Transform(({ obj }) => obj[propertyName])
       );
     }
   }
