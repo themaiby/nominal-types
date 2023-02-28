@@ -1,7 +1,12 @@
 import { EntityProperty, Platform, Type } from "@mikro-orm/core";
 import { TransformContext } from "@mikro-orm/core/types/Type";
 import { Constructor } from "@mikro-orm/core/typings";
-import { applyDecorators } from "@nestjs/common";
+import {
+  applyDecorators,
+  ArgumentMetadata,
+  BadRequestException,
+  PipeTransform,
+} from "@nestjs/common";
 import { ApiProperty, ApiPropertyOptions } from "@nestjs/swagger";
 import { Transform } from "class-transformer";
 import {
@@ -149,6 +154,26 @@ export const NType = (options: {
         IsString(),
         Transform(({ obj }) => obj[propertyName])
       );
+    }
+
+    /**
+     * Get pipe for NestJS to convert incoming params into class instantly
+     */
+    public static getPipe() {
+      const self = this;
+
+      return new (class implements PipeTransform<any, typeof self> {
+        public transform(value: string, metadata: ArgumentMetadata): any {
+          const validator = new (self.getValidator())();
+          const isValid = validator.validate(value);
+
+          if (!isValid)
+            throw new BadRequestException(validator.defaultMessage());
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          return new self(value);
+        }
+      })();
     }
   }
 

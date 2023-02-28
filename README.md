@@ -78,6 +78,55 @@ const myEmail = new Email("john.doe@example.com");
 const myInvalidEmail = new Email("not an email");
 ```
 
+## Mikro-ORM integration
+
+### Define entity and set type in decorator
+
+```typescript
+import { Firstname, UUID } from "@horizon-republic/nominal-types";
+import { PrimaryKey, Property } from "@mikro-orm/core";
+
+export class User {
+  @PrimaryKey({ type: UUID.getOrmType() })
+  public id: UUID;
+
+  @Property({ type: Firstname.getOrmType() })
+  public firstName: Firstname;
+}
+```
+
+## Class-validator integration
+
+Nominal type will automatically add
+
+### For resource class:
+
+```typescript
+export class UserResource {
+  @Expose()
+  @Firstname.getResponseDecorators("id")
+  public id: UUID;
+
+  @Expose()
+  @Firstname.getResponseDecorators("firstName")
+  public firstName: Firstname;
+}
+```
+
+### For request class:
+
+```typescript
+export class UserCreateRequest {
+  @IsNotEmpty()
+  @Firstname.getRequestDecorators()
+  public readonly firstName: Firstname;
+
+  @IsNotEmpty()
+  @Lastname.getRequestDecorators()
+  public readonly lastName: Lastname;
+}
+```
+
 ## Custom types
 
 You can also create custom nominal types using the NType function. Here's an example of how to create a custom type for
@@ -186,5 +235,6 @@ This library provides the following nominal types:
 
 ## ToDo
 
-- Generic typings
+- Typings with class generic
+- Separate to modules
 - Additional types
