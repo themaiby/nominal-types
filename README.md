@@ -25,13 +25,13 @@ npm install @horizon-republic/nominal-types
 To use a nominal type in your TypeScript code, you first import it from the library:
 
 ```ts
-import { Text } from "@horizon-republic/nominal-types";
+import { Text } from '@horizon-republic/nominal-types';
 ```
 
 You can then create an instance of the type by passing a value to its constructor:
 
 ```ts
-const myText = new Text("Hello, world!");
+const myText = new Text('Hello, world!');
 ```
 
 This will create a new instance of the Text type with the value "Hello, world!". You can then use this instance as you
@@ -52,10 +52,10 @@ they are both based on strings. This means that you can't accidentally assign a 
 LastName, or vice versa.
 
 ```ts
-import { FirstName, LastName } from "@horizon-republic/nominal-types";
+import { FirstName, LastName } from '@horizon-republic/nominal-types';
 
-const myFirstName = new FirstName("John");
-const myLastName = new LastName("Doe");
+const myFirstName = new FirstName('John');
+const myLastName = new LastName('Doe');
 
 // This will cause a compile-time error
 const myNewLastName: LastName = myFirstName;
@@ -70,12 +70,25 @@ you receive meets your domain-specific constraints.
 For example, the Email type enforces that the value it contains is a valid email address:
 
 ```ts
-import { Email } from "@horizon-republic/nominal-types";
+import { Email } from '@horizon-republic/nominal-types';
 
-const myEmail = new Email("john.doe@example.com");
+const myEmail = new Email('john.doe@example.com');
 
 // This will cause a runtime error
-const myInvalidEmail = new Email("not an email");
+const myInvalidEmail = new Email('not an email');
+```
+
+## NestJS Controller pipe integration
+
+```typescript
+import { Firstname } from './firstname.ntype';
+
+export class UsersController {
+  @Get(':id')
+  public async getOperation(@Param('id', Firstname.getPipe()) firstName: Firstname) {
+    return firstName; // instance of Firstname
+  }
+}
 ```
 
 ## Mikro-ORM integration
@@ -83,8 +96,8 @@ const myInvalidEmail = new Email("not an email");
 ### Define entity and set type in decorator
 
 ```typescript
-import { Firstname, UUID } from "@horizon-republic/nominal-types";
-import { PrimaryKey, Property } from "@mikro-orm/core";
+import { Firstname, UUID } from '@horizon-republic/nominal-types';
+import { PrimaryKey, Property } from '@mikro-orm/core';
 
 export class User {
   @PrimaryKey({ type: UUID.getOrmType() })
@@ -104,11 +117,11 @@ Nominal type will automatically add
 ```typescript
 export class UserResource {
   @Expose()
-  @Firstname.getResponseDecorators("id")
+  @Firstname.getResponseDecorators('id')
   public id: UUID;
 
   @Expose()
-  @Firstname.getResponseDecorators("firstName")
+  @Firstname.getResponseDecorators('firstName')
   public firstName: Firstname;
 }
 ```
@@ -133,11 +146,8 @@ You can also create custom nominal types using the NType function. Here's an exa
 a 24-hour time string:
 
 ```ts
-import {
-  ValidatorConstraint,
-  ValidatorConstraintInterface,
-} from "class-validator";
-import { NType } from "@horizon-republic/nominal-types";
+import { ValidatorConstraint, ValidatorConstraintInterface } from 'class-validator';
+import { NType } from '@horizon-republic/nominal-types';
 
 @ValidatorConstraint({ name: Time24Validator.name, async: false })
 class Time24Validator implements ValidatorConstraintInterface {
@@ -158,7 +168,7 @@ class Time24Validator implements ValidatorConstraintInterface {
  * @extends NType
  */
 export class Time24 extends NType({
-  name: "time24",
+  name: 'time24',
   validator: Time24Validator,
 }) {
   protected _nominalType = Time24.name;
@@ -169,7 +179,7 @@ export class Time24 extends NType({
    * @returns {number} The hour component of the time.
    */
   public getHour() {
-    return parseInt(this.value.split(":")[0], 10);
+    return parseInt(this.value.split(':')[0], 10);
   }
 
   /**
@@ -178,7 +188,7 @@ export class Time24 extends NType({
    * @returns {number} The minute component of the time.
    */
   public getMinute() {
-    return parseInt(this.value.split(":")[1], 10);
+    return parseInt(this.value.split(':')[1], 10);
   }
 
   /**
