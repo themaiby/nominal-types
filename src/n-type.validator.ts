@@ -4,9 +4,12 @@ import { NType } from './n-type';
 type NominalTypeClass = InstanceType<ReturnType<typeof NType>>;
 
 export abstract class NTypeValidator<NominalType extends NominalTypeClass> {
-  public abstract message(validationArguments?: ValidationArgs): string;
+  protected abstract message(validationArguments?: ValidationArgs): string;
 
-  public abstract rule(value: NominalType['value'], validationArguments?: ValidationArgs): Promise<boolean> | boolean;
+  protected abstract rule(
+    value: NominalType['value'],
+    validationArguments?: ValidationArgs,
+  ): Promise<boolean> | boolean;
 
   /**
    * Overridden to implement additional behaviors
