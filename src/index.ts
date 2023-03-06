@@ -1,2 +1,2 @@
-export { NType } from "./n-type";
-export * from "./types";
+export { NType } from './n-type';
+export * from './types';
