@@ -3,26 +3,13 @@ import { isEmail, ValidationArguments, ValidatorConstraint } from 'class-validat
 import { NType } from '../n-type';
 import { NTypeValidator } from '../n-type.validator';
 
-// @ValidatorConstraint({ name: EmailValidator.name, async: false })
-// class EmailValidator implements ValidatorConstraintInterface {
-//   public validate(value: string | Email): boolean {
-//     return isEmail(String(value));
-//   }
-//
-//   public defaultMessage(validationArguments?: ValidationArguments) {
-//     return `${validationArguments.property}: ${
-//       validationArguments?.value ?? "Specified value"
-//     } is not a valid e-mail.`;
-//   }
-// }
-
 @ValidatorConstraint({ name: EmailValidator.name, async: false })
 class EmailValidator extends NTypeValidator<Email> {
-  message(validationArguments: ValidationArguments | undefined): string {
+  public message(validationArguments: ValidationArguments | undefined): string {
     return `${validationArguments.property}: ${validationArguments?.value ?? 'Specified value'} is not a valid e-mail.`;
   }
 
-  rule(value: Email['value'], validationArguments: ValidationArguments | undefined): Promise<boolean> | boolean {
+  public rule(value: Email['value'], validationArguments: ValidationArguments | undefined): Promise<boolean> | boolean {
     return isEmail(value);
   }
 }
