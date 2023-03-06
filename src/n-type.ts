@@ -1,10 +1,10 @@
-import { EntityProperty, Platform, Type } from '@mikro-orm/core';
+import { EntityProperty,Platform,Type } from '@mikro-orm/core';
 import { TransformContext } from '@mikro-orm/core/types/Type';
 import { Constructor } from '@mikro-orm/core/typings';
-import { applyDecorators, ArgumentMetadata, BadRequestException, PipeTransform } from '@nestjs/common';
-import { ApiProperty, ApiPropertyOptions } from '@nestjs/swagger';
+import { applyDecorators,ArgumentMetadata,BadRequestException,PipeTransform } from '@nestjs/common';
+import { ApiProperty,ApiPropertyOptions } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
-import { IsObject, IsString, Validate, ValidatorConstraintInterface } from 'class-validator';
+import { IsObject,IsString,Validate,ValidatorConstraintInterface } from 'class-validator';
 import { NominalTypeException } from './exceptions/nominal-type.exception';
 
 /**
@@ -40,6 +40,8 @@ export const NType = <Name extends string>(options: { name: Name; validator?: Co
     /** @internal */
     readonly #_nominalType: Name;
 
+    public readonly value: any;
+
     public static readonly apiPropertyOptions: ApiPropertyOptions = {
       type: String,
       example: 'string',
@@ -50,7 +52,9 @@ export const NType = <Name extends string>(options: { name: Name; validator?: Co
      *
      * @param value - The value for the nominal type.
      */
-    public constructor(public value: any) {}
+    public constructor(value: any) {
+      this.value = value;
+    }
 
     public toString() {
       return this.value;
