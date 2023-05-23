@@ -1,10 +1,10 @@
-import { EntityProperty,Platform,Type } from '@mikro-orm/core';
+import { EntityProperty, Platform, Type } from '@mikro-orm/core';
 import { TransformContext } from '@mikro-orm/core/types/Type';
 import { Constructor } from '@mikro-orm/core/typings';
-import { applyDecorators,ArgumentMetadata,BadRequestException,PipeTransform } from '@nestjs/common';
-import { ApiProperty,ApiPropertyOptions } from '@nestjs/swagger';
+import { applyDecorators, ArgumentMetadata, BadRequestException, PipeTransform } from '@nestjs/common';
+import { ApiProperty, ApiPropertyOptions } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
-import { IsObject,IsString,Validate,ValidatorConstraintInterface } from 'class-validator';
+import { IsObject, IsString, Validate, ValidatorConstraintInterface } from 'class-validator';
 import { NominalTypeException } from './exceptions/nominal-type.exception';
 
 /**
@@ -35,7 +35,10 @@ import { NominalTypeException } from './exceptions/nominal-type.exception';
  * @param options.validator - A validator constructor for the nominal type
  * @constructor
  */
-export const NType = <Name extends string>(options: { name: Name; validator?: Constructor<ValidatorConstraintInterface> }) => {
+export const NType = <Name extends string>(options: {
+  name: Name;
+  validator?: Constructor<ValidatorConstraintInterface>;
+}) => {
   abstract class NominalTypeClass {
     /** @internal */
     readonly #_nominalType: Name;
@@ -93,6 +96,8 @@ export const NType = <Name extends string>(options: { name: Name; validator?: Co
           platform: Platform,
           context?: TransformContext | boolean,
         ): string {
+          if (value === null || value.value === null) return 'NULL';
+
           return value.value;
         }
 
