@@ -129,7 +129,7 @@ export const NType = <Name extends string>(options: {
     /**
      * Basic implementation of request decorator. Can be inherited
      */
-    public static getRequestDecorators() {
+    public static getRequestDecorators(...args: any[]) {
       return applyDecorators(
         IsObject(),
         ApiProperty(this.apiPropertyOptions),
