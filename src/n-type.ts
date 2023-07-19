@@ -134,11 +134,14 @@ export const NType = <Name extends string>(options: {
         IsObject(),
         ApiProperty(this.apiPropertyOptions),
         Validate(this.getValidator()),
-        Transform(({ value }) => {
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
-          return new this(value);
-        }),
+        Transform(
+          ({ value }) => {
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            return new this(value);
+          },
+          { toClassOnly: true },
+        ),
       );
     }
 
@@ -146,7 +149,7 @@ export const NType = <Name extends string>(options: {
       return applyDecorators(
         ApiProperty(this.apiPropertyOptions),
         IsString(),
-        Transform(({ obj }) => obj[propertyName]),
+        Transform(({ obj }) => obj[propertyName], { toPlainOnly: true }),
       );
     }
 
