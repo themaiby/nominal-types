@@ -1,10 +1,10 @@
 import { EntityProperty, Platform, Type } from '@mikro-orm/core';
 import { TransformContext } from '@mikro-orm/core/types/Type';
 import { Constructor } from '@mikro-orm/core/typings';
-import { applyDecorators, ArgumentMetadata, BadRequestException, PipeTransform } from '@nestjs/common';
+import { applyDecorators, ArgumentMetadata, BadRequestException, Logger, PipeTransform } from '@nestjs/common';
 import { ApiProperty, ApiPropertyOptions } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
-import { IsObject, IsString, Validate, ValidatorConstraintInterface } from 'class-validator';
+import { IsObject, Validate, ValidatorConstraintInterface } from 'class-validator';
 import { NominalTypeException } from './exceptions/nominal-type.exception';
 
 /**
@@ -40,7 +40,10 @@ export const NType = <Name extends string>(options: {
   validator?: Constructor<ValidatorConstraintInterface>;
 }) => {
   abstract class NominalTypeClass {
-    /** @internal */
+    /**
+     * Property used to make incompatible different types
+     * @internal
+     */
     readonly #_nominalType: Name;
 
     public readonly value: any;
@@ -126,30 +129,42 @@ export const NType = <Name extends string>(options: {
       throw new NominalTypeException(`${this.name} does not have a validator defined`);
     }
 
-    /**
-     * Basic implementation of request decorator. Can be inherited
-     */
+    /** @deprecated */
     public static getRequestDecorators(...args: any[]) {
+      new Logger(this.name).warn(
+        `'getRequestDecorators' method is deprecated. Use 'getResourceDecorators' instead. ${new Error().stack}`,
+      );
+
+      return this.getResourceDecorators(args);
+    }
+
+    /** @deprecated */
+    public static getResponseDecorators(...args: any[]) {
+      new Logger(this.name).warn(
+        `'getRequestDecorators' method is deprecated. Use 'getResourceDecorators' instead. ${new Error().stack}`,
+      );
+
+      return this.getResourceDecorators(args);
+    }
+
+    /**
+     * Basic implementation of resource decorator. Can be inherited
+     */
+    public static getResourceDecorators(...args: any[]) {
       return applyDecorators(
         IsObject(),
         ApiProperty(this.apiPropertyOptions),
         Validate(this.getValidator()),
         Transform(
           ({ value }) => {
+            if (value instanceof this) return value;
+
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore
             return new this(value);
           },
           { toClassOnly: true },
         ),
-      );
-    }
-
-    public static getResponseDecorators(propertyName: string) {
-      return applyDecorators(
-        ApiProperty(this.apiPropertyOptions),
-        IsString(),
-        Transform(({ obj }) => obj[propertyName], { toPlainOnly: true }),
       );
     }
 
