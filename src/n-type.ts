@@ -156,7 +156,9 @@ export const NType = <Name extends string>(options: {
         ApiProperty(this.apiPropertyOptions),
         Validate(this.getValidator()),
         Transform(
-          ({ value }) => {
+          ({ obj, key }) => {
+            const value = obj[key];
+
             if (value instanceof this) return value;
 
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -164,6 +166,17 @@ export const NType = <Name extends string>(options: {
             return new this(value);
           },
           { toClassOnly: true },
+        ),
+        Transform(
+          ({ key, obj }) => {
+            const value = obj[key];
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            if (value instanceof this) return value.toString();
+
+            return value;
+          },
+          { toPlainOnly: true },
         ),
       );
     }
