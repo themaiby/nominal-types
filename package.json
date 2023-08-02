@@ -1,6 +1,6 @@
 {
   "name": "@horizon-republic/nominal-types",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "type": "commonjs",
   "description": "Nominal types with runtime validation with compatibility for NestJS, mikroorm and class-validator",
   "main": "dist/index.js",
