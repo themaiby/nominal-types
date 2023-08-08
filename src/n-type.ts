@@ -40,18 +40,16 @@ export const NType = <Name extends string>(options: {
   validator?: Constructor<ValidatorConstraintInterface>;
 }) => {
   abstract class NominalTypeClass {
+    public static readonly apiPropertyOptions: ApiPropertyOptions = {
+      type: String,
+      example: 'string',
+    };
+    public readonly value: any;
     /**
      * Property used to make incompatible different types
      * @internal
      */
     readonly #_nominalType: Name;
-
-    public readonly value: any;
-
-    public static readonly apiPropertyOptions: ApiPropertyOptions = {
-      type: String,
-      example: 'string',
-    };
 
     /**
      * Constructs a new instance of the nominal type.
@@ -60,24 +58,6 @@ export const NType = <Name extends string>(options: {
      */
     public constructor(value: any) {
       this.value = value;
-    }
-
-    public toString() {
-      return this.value;
-    }
-
-    public toJSON() {
-      return this.toString();
-    }
-
-    /**
-     * Checks if two values of the nominal type are identical.
-     *
-     * @param value - The value to compare with the current instance value.
-     * @returns Returns `true` if the values are identical, `false` otherwise.
-     */
-    public isIdentical(value: any) {
-      return this.value === value;
     }
 
     /**
@@ -160,8 +140,8 @@ export const NType = <Name extends string>(options: {
             const value = obj[key];
 
             if (value instanceof this) return value;
+            if (value === null) return null;
 
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore
             return new this(value);
           },
@@ -170,8 +150,8 @@ export const NType = <Name extends string>(options: {
         Transform(
           ({ key, obj }) => {
             const value = obj[key];
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
+
+            if (value === null) return null;
             if (value instanceof this) return value.toString();
 
             return value;
@@ -198,6 +178,24 @@ export const NType = <Name extends string>(options: {
           return new self(value);
         }
       })();
+    }
+
+    public toString() {
+      return this.value;
+    }
+
+    public toJSON() {
+      return this.toString();
+    }
+
+    /**
+     * Checks if two values of the nominal type are identical.
+     *
+     * @param value - The value to compare with the current instance value.
+     * @returns Returns `true` if the values are identical, `false` otherwise.
+     */
+    public isIdentical(value: any) {
+      return this.value === value;
     }
   }
 
