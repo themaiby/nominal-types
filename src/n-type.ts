@@ -1,11 +1,11 @@
-import { EntityProperty, Platform, Type } from '@mikro-orm/core';
-import { TransformContext } from '@mikro-orm/core/types/Type';
-import { Constructor } from '@mikro-orm/core/typings';
-import { applyDecorators, ArgumentMetadata, BadRequestException, Logger, PipeTransform } from '@nestjs/common';
-import { ApiProperty, ApiPropertyOptions } from '@nestjs/swagger';
-import { Transform } from 'class-transformer';
-import { IsObject, Validate, ValidatorConstraintInterface } from 'class-validator';
-import { NominalTypeException } from './exceptions/nominal-type.exception';
+import {EntityProperty, Platform, Type} from '@mikro-orm/core';
+import {TransformContext} from '@mikro-orm/core/types/Type';
+import {Constructor} from '@mikro-orm/core/typings';
+import {applyDecorators, ArgumentMetadata, BadRequestException, Logger, PipeTransform} from '@nestjs/common';
+import {ApiProperty, ApiPropertyOptions} from '@nestjs/swagger';
+import {Transform} from 'class-transformer';
+import {IsObject, Validate, ValidatorConstraintInterface} from 'class-validator';
+import {NominalTypeException} from './exceptions/nominal-type.exception';
 
 /**
  * Factory function to create a new NominalTypeClass.
@@ -85,6 +85,7 @@ export const NType = <Name extends string>(options: {
         }
 
         public convertToJSValue(value: string, platform: Platform) {
+          if (value === 'NULL') return null;
           // todo: find how avoid this
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
