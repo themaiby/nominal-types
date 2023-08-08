@@ -1,11 +1,11 @@
-import {EntityProperty, Platform, Type} from '@mikro-orm/core';
-import {TransformContext} from '@mikro-orm/core/types/Type';
-import {Constructor} from '@mikro-orm/core/typings';
-import {applyDecorators, ArgumentMetadata, BadRequestException, Logger, PipeTransform} from '@nestjs/common';
-import {ApiProperty, ApiPropertyOptions} from '@nestjs/swagger';
-import {Transform} from 'class-transformer';
-import {IsObject, Validate, ValidatorConstraintInterface} from 'class-validator';
-import {NominalTypeException} from './exceptions/nominal-type.exception';
+import { EntityProperty, Platform, Type } from '@mikro-orm/core';
+import { TransformContext } from '@mikro-orm/core/types/Type';
+import { Constructor } from '@mikro-orm/core/typings';
+import { applyDecorators, ArgumentMetadata, BadRequestException, Logger, PipeTransform } from '@nestjs/common';
+import { ApiProperty, ApiPropertyOptions } from '@nestjs/swagger';
+import { Transform } from 'class-transformer';
+import { IsObject, Validate, ValidatorConstraintInterface } from 'class-validator';
+import { NominalTypeException } from './exceptions/nominal-type.exception';
 
 /**
  * Factory function to create a new NominalTypeClass.
@@ -79,7 +79,7 @@ export const NType = <Name extends string>(options: {
           platform: Platform,
           context?: TransformContext | boolean,
         ): string {
-          if (value === null || value.value === null) return 'NULL';
+          if (value === null || value.value === null) return null;
 
           return value.value;
         }
