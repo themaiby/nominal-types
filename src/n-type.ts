@@ -1,7 +1,7 @@
 import { EntityProperty, Platform, Type } from '@mikro-orm/core';
 import { TransformContext } from '@mikro-orm/core/types/Type';
 import { Constructor } from '@mikro-orm/core/typings';
-import { applyDecorators, ArgumentMetadata, BadRequestException, Logger, PipeTransform } from '@nestjs/common';
+import { applyDecorators, ArgumentMetadata, BadRequestException, PipeTransform } from '@nestjs/common';
 import { ApiProperty, ApiPropertyOptions } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
 import { IsObject, Validate, ValidatorConstraintInterface } from 'class-validator';
@@ -40,11 +40,8 @@ export const NType = <Name extends string>(options: {
   validator?: Constructor<ValidatorConstraintInterface>;
 }) => {
   abstract class NominalTypeClass {
-    public static readonly apiPropertyOptions: ApiPropertyOptions = {
-      type: String,
-      example: 'string',
-    };
-    public readonly value: any;
+    public static readonly apiPropertyOptions: ApiPropertyOptions = { type: String, example: 'string' };
+
     /**
      * Property used to make incompatible different types
      * @internal
@@ -56,9 +53,7 @@ export const NType = <Name extends string>(options: {
      *
      * @param value - The value for the nominal type.
      */
-    public constructor(value: any) {
-      this.value = value;
-    }
+    public constructor(public readonly value: any) {}
 
     /**
      * Returns the ORM type for this nominal type.
@@ -110,24 +105,6 @@ export const NType = <Name extends string>(options: {
       throw new NominalTypeException(`${this.name} does not have a validator defined`);
     }
 
-    /** @deprecated */
-    public static getRequestDecorators(...args: any[]) {
-      new Logger(this.name).warn(
-        `'getRequestDecorators' method is deprecated. Use 'getResourceDecorators' instead. ${new Error().stack}`,
-      );
-
-      return this.getResourceDecorators(args);
-    }
-
-    /** @deprecated */
-    public static getResponseDecorators(...args: any[]) {
-      new Logger(this.name).warn(
-        `'getRequestDecorators' method is deprecated. Use 'getResourceDecorators' instead. ${new Error().stack}`,
-      );
-
-      return this.getResourceDecorators(args);
-    }
-
     /**
      * Basic implementation of resource decorator. Can be inherited
      */
@@ -165,7 +142,7 @@ export const NType = <Name extends string>(options: {
     /**
      * Get pipe for NestJS to convert incoming params into class instantly
      */
-    public static getPipe() {
+    public static getPipe(): PipeTransform<any, typeof this> {
       const self = this;
 
       return new (class implements PipeTransform<any, typeof self> {
@@ -174,11 +151,14 @@ export const NType = <Name extends string>(options: {
           const isValid = validator.validate(value);
 
           if (!isValid) throw new BadRequestException(validator.defaultMessage());
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
-          return new self(value);
+
+          return self.createInstance.bind(this);
         }
       })();
+    }
+
+    public static createInstance<T extends NominalTypeClass>(this: new (...args: any[]) => T, ...args: any[]): T {
+      return new this(...args);
     }
 
     public toString() {
