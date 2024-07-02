@@ -152,7 +152,10 @@ export const NType = <Name extends string>(options: {
 
           if (!isValid) throw new BadRequestException(validator.defaultMessage());
 
-          return self.createInstance.bind(this)();
+          // Dynamically create an instance of the class
+          const ConcreteClass = self as unknown as new (...args: any[]) => NominalTypeClass;
+
+          return new ConcreteClass(value);
         }
       })();
     }
