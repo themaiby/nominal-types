@@ -152,7 +152,7 @@ export const NType = <Name extends string>(options: {
 
           if (!isValid) throw new BadRequestException(validator.defaultMessage());
 
-          return self.createInstance.bind(this);
+          return self.createInstance.bind(this)();
         }
       })();
     }
